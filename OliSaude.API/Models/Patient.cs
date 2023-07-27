@@ -1,5 +1,3 @@
-using OliSaude.API.Enums;
-
 namespace OliSaude.API.Models;
 
 public class Patient
@@ -8,11 +6,13 @@ public class Patient
 
     public string Name { get; set; } = string.Empty;
 
-    public Gender Gender { get; set; }
+    public string Gender { get; set; } = string.Empty;
+
+    public DateOnly DateOfBirth { get; set; }
 
     public DateTime CreatedDate { get; set; }
-
-    public DateTime UpdatedDate { get; set; }
-
-    public List<HealthIssue> HealthIssues { get; set; } = new();
+    
+    public DateTime? UpdatedDate { get; set; }
+    
+    //public ICollection<HealthIssue> HealthIssues { get; set; } = new HashSet<HealthIssue>(); 
 }
