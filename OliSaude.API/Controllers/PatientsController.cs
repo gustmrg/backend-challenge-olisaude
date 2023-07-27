@@ -1,5 +1,4 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OliSaude.API.Data;
@@ -82,10 +81,32 @@ public class PatientsController : ControllerBase
 
     [HttpPut]
     [Route("{id:guid}")]
-    public ActionResult UpdatePatientByIdAsync(
+    public async Task<ActionResult> UpdatePatientByIdAsync(
         [FromRoute] Guid id, 
-        [FromBody] Patient patient)
+        [FromBody] PatientDTO patientDTO)
     {
-        return Ok();
+        if (!ModelState.IsValid)
+            return BadRequest();
+
+        try
+        {
+            var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Id == id);
+            
+            if (patient == null)
+                return NotFound();
+
+            patient.Name = patientDTO.Name;
+            patient.Gender = patientDTO.Gender;
+            patient.UpdatedDate = DateTime.Now;
+
+            _context.Patients.Update(patient);
+            await _context.SaveChangesAsync();
+
+            return Ok(patient);
+        }
+        catch (Exception)
+        {
+            return BadRequest(new { message = "Could not create patient." });
+        }
     }
 }
