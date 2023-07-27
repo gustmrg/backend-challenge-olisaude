@@ -2,7 +2,7 @@ using OliSaude.API.Enums;
 
 namespace OliSaude.API.Models;
 
-public class Client
+public class Patient
 {
     public Guid Id { get; set; }
 
