@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OliSaude.API.Data;
@@ -32,6 +31,22 @@ public class PatientsController : ControllerBase
         }
     }
     
+    [HttpGet("greater-risk")]
+    public async Task<ActionResult> GetPatientsWithGreaterRiskAsync()
+    {
+        // TODO: Add validation to return only patients with greater health risk
+        try
+        {
+            var patients = await _context.Patients.AsNoTracking().ToListAsync();
+
+            return Ok(patients);
+        }
+        catch (Exception)
+        {
+            return BadRequest(new { message = "Could not retrieve list of patients." });
+        }
+    }
+    
     [HttpGet]
     [Route("{id:guid}")]
     public async Task<ActionResult> GetPatientByIdAsync(Guid id)
@@ -50,7 +65,7 @@ public class PatientsController : ControllerBase
             return BadRequest(new { message = "Could not find patient." });
         }
     }
-    
+
     [HttpPost]
     public async Task<ActionResult> CreatePatientAsync(PatientDTO patientDTO)
     {
@@ -109,4 +124,19 @@ public class PatientsController : ControllerBase
             return BadRequest(new { message = "Could not create patient." });
         }
     }
+
+    public static void GetTotalRisk(int[] severity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public static double GetScore(int totalRisk)
+    {
+        var e = 2.71828d;
+
+        var score = (1 / (1 + Math.Pow(e, -(-2.8 + totalRisk)))) * 100;
+
+        return score;
+    }
 }
+
