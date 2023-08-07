@@ -16,6 +16,10 @@ public class PatientsController : ControllerBase
         _context = context;
     }
 
+    /// <summary>
+    /// Pacientes cadastrados no banco de dados.
+    /// </summary>
+    /// <returns>Lista de pacientes cadastrados.</returns>
     [HttpGet]
     public async Task<ActionResult> GetPatientsAsync()
     {
@@ -31,6 +35,10 @@ public class PatientsController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Pacientes com maior risco de saúde de acordo com fórmula de cálculo fornecida.
+    /// </summary>
+    /// <returns>Lista de 10 pacientes cadastrados com maior risco de saúde.</returns>
     [HttpGet("greater-risk")]
     public async Task<ActionResult> GetPatientsWithGreaterRiskAsync()
     {
@@ -47,6 +55,11 @@ public class PatientsController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Busca no banco de dados pelo id o paciente cadastrado.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet]
     [Route("{id:guid}")]
     public async Task<ActionResult> GetPatientByIdAsync(Guid id)
@@ -66,6 +79,11 @@ public class PatientsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Cadastra um novo paciente no banco de dados.
+    /// </summary>
+    /// <param name="patientDTO"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ActionResult> CreatePatientAsync(PatientDTO patientDTO)
     {
@@ -94,6 +112,12 @@ public class PatientsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Atualiza as informações de cadastro do paciente informado.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="patientDTO"></param>
+    /// <returns></returns>
     [HttpPut]
     [Route("{id:guid}")]
     public async Task<ActionResult> UpdatePatientByIdAsync(
